@@ -5,9 +5,9 @@ NameVirtualHost *
 UseCanonicalName Off
 
 <VirtualHost *>
-    # Catch only requests to <%= @params[:server_extension] %> domains.
-    ServerName <%= @params[:server_extension] %>
-    ServerAlias *.<%= @params[:server_extension] %>
+    # Catch only requests to <%= node['dynamic-vhosts']['server_extension'] %> domains.
+    ServerName <%= node['dynamic-vhosts']['server_extension'] %>
+    ServerAlias *.<%= node['dynamic-vhosts']['server_extension'] %>
 
     # Log everything so its sortable by domain name.
     LogFormat "%V %h %t \"%r\" %s %b" vcommon
@@ -15,9 +15,9 @@ UseCanonicalName Off
     ErrorLog <%= node['apache']['log_dir'] %>/dynamic-error.log
 
     # Use the first part of the domain name as folder name to look in.
-    VirtualDocumentRoot <%= @params[:docroot_directory] %>/%1/<%= @params[:docroot_subdirectory] %>
+    VirtualDocumentRoot <%= node['dynamic-vhosts']['docroot_directory'] %>/%1/<%= node['dynamic-vhosts']['docroot_subdirectory'] %>
 
-    <% if @params[:using_php] %>
+    <% if node['dynamic-vhosts']['using_php'] %>
     # Make php set the DOCUMENT_ROOT correctly since apache
     # doesn't set it correctly to the virtual one.
     #

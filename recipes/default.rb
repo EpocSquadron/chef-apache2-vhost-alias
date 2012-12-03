@@ -10,6 +10,7 @@
 # cookbook-syslog-ng/recipes/default.rb
 
 include_recipe "apache2"
+include_recipe "apache2::mod_vhost_alias"
 
 # Install the generic vhosts file.
 template "httpd-vhosts.conf" do
