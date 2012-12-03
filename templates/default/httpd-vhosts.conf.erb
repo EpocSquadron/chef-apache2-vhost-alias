@@ -15,14 +15,14 @@ UseCanonicalName Off
     ErrorLog <%= node['apache']['log_dir'] %>/dynamic-error.log
 
     # Use the first part of the domain name as folder name to look in.
-    VirtualDocumentRoot <%= @params[:docroot_directory] %>/%1<%= '/' + @params[:docroot_subdirectory] %>
+    VirtualDocumentRoot <%= @params[:docroot_directory] %>/%1/<%= @params[:docroot_subdirectory] %>
 
-    <% if @params[:using_php] -%>
+    <% if @params[:using_php] %>
     # Make php set the DOCUMENT_ROOT correctly since apache
     # doesn't set it correctly to the virtual one.
     #
     # See http://jbenner.net/blog/quick-tip-get-proper-document-root-when-using-mod-vhost-alias
     php_admin_value auto_prepend_file /Users/Dan/Sites/.conf/setdocroot.php
-    <% end -%>
+    <% end %>
 
 </VirtualHost>

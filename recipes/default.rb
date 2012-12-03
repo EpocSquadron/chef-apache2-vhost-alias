@@ -12,7 +12,7 @@
 include_recipe "apache2"
 
 # Install the generic vhosts file.
-template "httpd-vhosts" do
+template "httpd-vhosts.conf" do
   path "#{node['apache']['dir']}/conf.d/httpd-vhosts.conf"
   source "httpd-vhosts.conf.erb"
   owner "root"
