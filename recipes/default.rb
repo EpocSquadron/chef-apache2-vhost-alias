@@ -10,7 +10,7 @@
 # cookbook-syslog-ng/recipes/default.rb
 
 include_recipe "apache2"
-include_recipe "php"
+include_recipe "dynamic-vhosts::mod_vhost_alias"
 
 # Install the generic vhosts file.
 template "httpd-vhosts.conf" do
@@ -24,6 +24,9 @@ template "httpd-vhosts.conf" do
 end
 
 if node['dynamic-vhosts']['using_php']
+
+	# Pull in the php recipe.
+	include_recipe "php"
 
 	# Make a directory for includes.
 	directory "#{node['apache']['dir']}/includes" do
