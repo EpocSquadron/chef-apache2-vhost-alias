@@ -23,7 +23,7 @@ mysql_connection_info = {
 mysql_database_user 'root' do
   connection mysql_connection_info
   password node['mysql']['server_root_password']
-  host "192.168.0.1"
+  host "192.168.33.1"
   action :grant
 end
 
