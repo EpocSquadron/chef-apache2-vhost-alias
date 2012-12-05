@@ -30,15 +30,15 @@ if node['dynamic-vhosts']['using_php']
 
 	# Make a directory for includes.
 	directory "#{node['apache']['dir']}/includes" do
-	  mode 00755
-	  owner "root"
-	  group node['apache']['root_group']
+		mode 00755
+		owner "root"
+		group node['apache']['root_group']
 	end
 
 	# Insert the auto_prepend_file
 	template "setDocRoot.php" do
 		path "#{node['apache']['dir']}/includes/setDocRoot.php"
-		source "setDocRoot.php.erb"
+		source "setDocRoot.php"
 		owner "root"
 		group node['apache']['root_group']
 		mode 00644
