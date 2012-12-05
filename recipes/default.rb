@@ -4,8 +4,6 @@
 #
 # Copyright 2012, Digital Surgeons
 #
-# All rights reserved - Do Not Redistribute
-#
 
 # cookbook-syslog-ng/recipes/default.rb
 
