@@ -8,6 +8,7 @@
 # cookbook-syslog-ng/recipes/default.rb
 
 include_recipe "apache2"
+include_recipe "mysql::server"
 include_recipe "dynamic-vhosts::mod_vhost_alias"
 
 # Install the generic vhosts file.
