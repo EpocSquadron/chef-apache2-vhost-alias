@@ -9,6 +9,7 @@
 
 include_recipe "apache2"
 include_recipe "mysql::server"
+include_recipe "database"
 include_recipe "dynamic-vhosts::mod_vhost_alias"
 
 # Allow host system to connect to mysql
