@@ -5,8 +5,6 @@
 # Copyright 2012, Digital Surgeons
 #
 
-# cookbook-syslog-ng/recipes/default.rb
-
 include_recipe "apache2"
 include_recipe "dynamic-vhosts::mod_vhost_alias"
 
