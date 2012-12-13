@@ -8,21 +8,23 @@ mysql_connection_info = {
 }
 
 # For each directory in /var/www/
-directories = Dir.glob('[^.]*').select {|f| File.directory? f}
+directories = Dir.glob("/var/www/[^.]*").select {|f| File.directory? f}
 
 directories.each do |dir_name|
+	adjusted_name = dir_name.sub(/\/var\/www\//, '')[0,10]
+
 	# Make a database named after the directory
-	mysql_database dir_name do
+	mysql_database adjusted_name do
 		connection mysql_connection_info
 		action :create
 	end
 
 	# Make a dedicated localhost only user for it
-	mysql_database_user 'foo_user' do
+	mysql_database_user adjusted_name do
 		connection mysql_connection_info
 		password 'root'
 		database_name dir_name
-		host 'localhost'
+		host '%'
 		action [:create, :grant]
 	end
 end
