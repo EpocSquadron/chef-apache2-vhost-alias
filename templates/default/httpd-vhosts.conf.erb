@@ -1,10 +1,7 @@
-# Catch all requests.
-NameVirtualHost *
-
 # Enable wildcard catching of domain names by vhost directive.
 UseCanonicalName Off
 
-<VirtualHost *>
+<VirtualHost *:80>
     # Catch only requests to <%= node['dynamic-vhosts']['server_extension'] %> domains.
     ServerName <%= node['dynamic-vhosts']['server_extension'] %>
     ServerAlias *.<%= node['dynamic-vhosts']['server_extension'] %>
@@ -24,5 +21,38 @@ UseCanonicalName Off
     # See http://jbenner.net/blog/quick-tip-get-proper-document-root-when-using-mod-vhost-alias
     php_admin_value auto_prepend_file <%= node['apache']['dir'] %>/includes/setDocRoot.php
     <% end %>
+
+</VirtualHost>
+
+<VirtualHost *:443>
+    # Catch only requests to <%= node['dynamic-vhosts']['server_extension'] %> domains.
+    ServerName <%= node['dynamic-vhosts']['server_extension'] %>
+    ServerAlias *.<%= node['dynamic-vhosts']['server_extension'] %>
+
+    # Log everything so its sortable by domain name.
+    LogFormat "%V %h %t \"%r\" %s %b" vcommon
+    CustomLog <%= node['apache']['log_dir'] %>/dynamic-access.log vcommon
+    ErrorLog <%= node['apache']['log_dir'] %>/dynamic-error.log
+
+    # Use the first part of the domain name as folder name to look in.
+    VirtualDocumentRoot <%= node['dynamic-vhosts']['docroot_directory'] %>/%1/<%= node['dynamic-vhosts']['docroot_subdirectory'] %>
+
+    <% if node['dynamic-vhosts']['using_php'] %>
+    # Make php set the DOCUMENT_ROOT correctly since apache
+    # doesn't set it correctly to the virtual one.
+    #
+    # See http://jbenner.net/blog/quick-tip-get-proper-document-root-when-using-mod-vhost-alias
+    php_admin_value auto_prepend_file <%= node['apache']['dir'] %>/includes/setDocRoot.php
+    <% end %>
+
+    SSLEngine on
+    SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+    SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+    <FilesMatch "\.(cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    BrowserMatch ".*MSIE.*" \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
 
 </VirtualHost>
